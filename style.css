@@ -4,21 +4,22 @@
   box-sizing: border-box;
 }
 
-.main-container {
+.main--container {
   width: 350px;
   height: 420px;
   margin: 0 auto;
 }
 
-.game-grid {
+.game--grid {
   display: grid;
   grid-template-rows: repeat(6, 1fr);
-  grid-gap: 5px;
-  border: 1px solid black;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 10px;
+  padding: 10px;
 }
 
-.game-grid-item {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-gap: 5px;
+.game--grid__tile {
+  border: 1px solid black;
+  width: 20px;
+  height: 20px;
 }
