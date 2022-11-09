@@ -13,15 +13,13 @@ function getRandomWord() {
 //function for human readable date and time
 function dateFormat() {
 	const date = new Date();
-	const year = date.getFullYear();
-	const month = date.getMonth();
+	const month = date.getMonth() + 1;
 	const day = date.getDate();
 	let hour = date.getHours();
 	let minute = date.getMinutes();
 	if (hour < 10) hour = "0" + hour;
 	if (minute < 10) minute = "0" + minute;
-	const currentDate = `Last refresh was on ${day}/${month}/${year} at ${hour}:${minute}`;
-	return currentDate;
+	return `Last refresh was on ${day}/${month} at ${hour}:${minute}`;
 }
 
 //function to show time until next refresh (24hours)
@@ -46,7 +44,7 @@ function logLocalStorage() {
 	for (let i = 0; i < localStorage.length; i++) {
 		const key = localStorage.key(i);
 		const value = localStorage.getItem(key);
-		console.log(`%c${key}: %c${value}`, "color: black; background: white");
+		console.log(`%c${key}: %c${value}`, "color: black; background: white; padding: 10px;");
 	}
 	console.groupEnd();
 }
@@ -55,9 +53,9 @@ function logLocalStorage() {
 function checkKey(key) {
 	const targetWord = localStorage.getItem("targetWord");
 	if (targetWord.includes(key)) {
-		console.log("%c correct", "color: black; background: lightgreen");
+		console.log("%c correct", "color: black; background: lightgreen; padding: 10px;");
 	} else {
-		console.log("%c incorrect", "color: black; background: red");
+		console.log("%c incorrect", "color: black; background: orange; padding: 10px;");
 	}
 }
 
