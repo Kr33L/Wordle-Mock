@@ -10,7 +10,7 @@
 	margin: 0 auto;
 }
 
-/* <-- Game Grid -->
+/* <-- Game Grid --> */
 .game--grid {
 	display: grid;
 	grid-template-rows: repeat(6, 1fr);
