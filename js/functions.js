@@ -1,7 +1,7 @@
 function getRandomWord() {
-	const randomIndex = Math.floor(Math.random() * dictionary.length); //gets a random index of the dictionary array
-	const randomWord = dictionary[randomIndex]; //assign the random indexed word to a variable
-	return randomWord; // return the random word
+	const randomIndex = Math.floor(Math.random() * dictionary.length);
+	const randomWord = dictionary[randomIndex];
+	return randomWord;
 }
 
 function dateFormat() {
@@ -10,7 +10,7 @@ function dateFormat() {
 	const month = date.getMonth();
 	const day = date.getDate();
 	const hour = date.getHours();
-	if (hour < 10) {
+	let (hour < 10) {
 		hour = "0" + hour;
 	}
 	let minute = date.getMinutes();
@@ -23,18 +23,18 @@ function dateFormat() {
 
 function timeUntilRefresh() {
 	const lastUpdated = localStorage.getItem("lastUpdated");
-	const refreshTime = 86400000 - (new Date() - lastUpdated);
+	const refreshTime = 86400000 - (Date.now() - lastUpdated);
 	return refreshTime + " ms";
 }
 
 //object containing all the key value pairs from local storage
 function setLocalStorage() {
-	displayLocalStorage();
-	localStorage.setItem("lastUpdated", Date.now());
-	localStorage.setItem("lastUpdatedHuman", dateFormat());
-	localStorage.setItem("timeUntilRefresh", timeUntilRefresh());
-	localStorage.setItem("targetWord", getRandomWord());
-	displayLocalStorage();
+	if (localStorage.length === 0 || Date.now() - lastUpdated > 86400000) {
+		localStorage.setItem("lastUpdated", Date.now());
+		localStorage.setItem("lastUpdatedHuman", dateFormat());
+		localStorage.setItem("timeUntilRefresh", timeUntilRefresh());
+		localStorage.setItem("targetWord", getRandomWord());
+	}
 }
 
 //iterate through local storage and display the key value pairs
@@ -49,11 +49,14 @@ function displayLocalStorage() {
 	console.groupEnd();
 }
 
-function getWord() {
+function setTargetWord() {
 	const targetWord = localStorage.getItem("targetWord");
 	const lastUpdated = localStorage.getItem("lastUpdated");
 	//if local storage is empty, or if the word is older than 24 hours, get a new word
 	if (targetWord === null || lastUpdated === null || Date.now() - lastUpdated > 86400000) {
 		setLocalStorage();
+		displayLocalStorage();
 	}
 }
+
+//functions for wordle game

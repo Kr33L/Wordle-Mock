@@ -9,5 +9,6 @@
 
 //wait until window has fully loaded
 window.addEventListener("load", function () {
+  timeUntilRefresh();
   getWord();
 });
