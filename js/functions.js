@@ -1,9 +1,3 @@
-const storage = {
-	lastUpdatedHuman: localStorage.getItem("lastUpdatedHuman"),
-	randomWord: localStorage.getItem("randomWord"),
-	lastUpdated: localStorage.getItem("lastUpdated"),
-};
-
 function getRandomWord() {
 	const randomIndex = Math.floor(Math.random() * dictionary.length); //gets a random index of the dictionary array
 	const randomWord = dictionary[randomIndex]; //assign the random indexed word to a variable
@@ -19,7 +13,7 @@ function dateFormat() {
 	if (hour < 10) {
 		hour = "0" + hour;
 	}
-	const minute = date.getMinutes();
+	let minute = date.getMinutes();
 	if (minute < 10) {
 		minute = "0" + minute;
 	}
@@ -28,18 +22,31 @@ function dateFormat() {
 }
 
 function timeUntilRefresh() {
-  const lastUpdated = localStorage.getItem("lastUpdated");
-  const timeUntilRefresh = 86400000 - (new Date() - lastUpdated);
-  return timeUntilRefresh;
+	const lastUpdated = localStorage.getItem("lastUpdated");
+	const refreshTime = 86400000 - (new Date() - lastUpdated);
+	return refreshTime + " ms";
 }
 
+//object containing all the key value pairs from local storage
 function setLocalStorage() {
-	console.log(storage);
+	displayLocalStorage();
 	localStorage.setItem("lastUpdated", Date.now());
 	localStorage.setItem("lastUpdatedHuman", dateFormat());
-  localStorage.setItem("timeUntilRefresh", timeUntilRefresh());
+	localStorage.setItem("timeUntilRefresh", timeUntilRefresh());
 	localStorage.setItem("targetWord", getRandomWord());
-	console.log(storage);
+	displayLocalStorage();
+}
+
+//iterate through local storage and display the key value pairs
+function displayLocalStorage() {
+	console.group("Local Storage");
+	for (let i = 0; i < localStorage.length; i++) {
+		const key = localStorage.key(i);
+		//color code the key value pairs
+		const value = localStorage.getItem(key);
+		console.log(`%c${key}: %c${value}`, "color: lightblue", "color: white");
+	}
+	console.groupEnd();
 }
 
 function getWord() {
