@@ -25,7 +25,6 @@ function dateFormat() {
 function refreshTimer() {
 	const lastUpdated = localStorage.getItem("lastUpdated");
 	const refreshTime = 86400000 - (Date.now() - lastUpdated);
-	//convert refresh time to minutes
 	localStorage.setItem("timeUntilRefresh", refreshTime + "ms");
 }
 
@@ -60,15 +59,18 @@ function checkKey(key) {
 }
 
 //event listeners
-dataKeys.forEach((key) => {
-	key.addEventListener("click", (e) => {
-		checkKey(e.target.textContent);
-	});
-});
 
-document.addEventListener("keydown", function (e) {
-	const key = e.key.toUpperCase();
-	if (key.match(/^[A-Z]$/)) {
-		checkKey(key);
-	}
-});
+(function virtualKeyboardHandler() {
+	dataKeys.forEach((key) => {
+		key.addEventListener("click", function () {
+			checkKey(this.innerText);
+		});
+	});
+})();
+
+(function keyboardHandler() {
+	document.addEventListener("keydown", function (e) {
+		const key = e.key.toUpperCase();
+		if (key.match(/^[A-Z]$/)) checkKey(key);
+	});
+})();

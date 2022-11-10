@@ -9,6 +9,7 @@
 
 //wait until window has fully loaded
 window.addEventListener("load", function () {
+  //f12.keydown
 	setTargetWord();
 	refreshTimer();
 	logLocalStorage();
