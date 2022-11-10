@@ -13,12 +13,11 @@ function getRandomWord() {
 //function for human readable date and time
 function dateFormat() {
 	const date = new Date();
-	const month = date.getMonth() + 1;
-	const day = date.getDate();
-	let hour = date.getHours();
-	let minute = date.getMinutes();
-	if (hour < 10) hour = "0" + hour;
-	if (minute < 10) minute = "0" + minute;
+	const addZero = (num) => (num < 10 ? "0" + num : num); //add a zero if the number is less than 10
+	const month = addZero(date.getMonth() + 1);
+	const day = addZero(date.getDate());
+	const hour = addZero(date.getHours());
+	const minute = addZero(date.getMinutes());
 	return `Last refresh was on ${day}/${month} at ${hour}:${minute}`;
 }
 
@@ -26,6 +25,7 @@ function dateFormat() {
 function refreshTimer() {
 	const lastUpdated = localStorage.getItem("lastUpdated");
 	const refreshTime = 86400000 - (Date.now() - lastUpdated);
+	//convert refresh time to minutes
 	localStorage.setItem("timeUntilRefresh", refreshTime + "ms");
 }
 
@@ -68,7 +68,7 @@ dataKeys.forEach((key) => {
 
 document.addEventListener("keydown", function (e) {
 	const key = e.key.toUpperCase();
-	if (key.match(/[A-Z]/)) {
+	if (key.match(/^[A-Z]$/)) {
 		checkKey(key);
 	}
 });
