@@ -5,9 +5,7 @@ const dataKeys = document.querySelectorAll("[data-key]");
 //function to get a random word to use as the target
 function getRandomWord() {
 	const randomIndex = Math.floor(Math.random() * dictionary.length);
-	let randomWord = dictionary[randomIndex];
-	randomWord = randomWord.toUpperCase();
-	return randomWord;
+	return dictionary[randomIndex].toUpperCase();
 }
 
 //function for human readable date and time
