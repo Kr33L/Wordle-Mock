@@ -45,14 +45,14 @@ function logLocalStorage() {
 	}
 	console.groupEnd();
 }
-
-//function to check if the key pressed is in the target word
 function checkKey(key) {
 	const targetWord = localStorage.getItem("targetWord");
+	const correctStyle = "color: black; background: lightgreen; padding: 10px;";
+	const incorrectStyle = "color: black; background: orange; padding: 10px;";
 	if (targetWord.includes(key)) {
-		console.log("%c correct", "color: black; background: lightgreen; padding: 10px;");
+		console.log("%ccorrect", correctStyle);
 	} else {
-		console.log("%c incorrect", "color: black; background: orange; padding: 10px;");
+		console.log("%cincorrect", incorrectStyle);
 	}
 }
 
