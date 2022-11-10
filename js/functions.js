@@ -68,5 +68,7 @@ dataKeys.forEach((key) => {
 
 document.addEventListener("keydown", function (e) {
 	const key = e.key.toUpperCase();
-	checkKey(key);
+	if (key.match(/[A-Z]/)) {
+		checkKey(key);
+	}
 });
