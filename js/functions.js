@@ -2,8 +2,8 @@ const gameGrid = document.querySelector("[data-grid]");
 const keyboard = document.querySelector("[data-keyboard]");
 const dataKeys = document.querySelectorAll("[data-key]");
 
-//function to get a random word to use as the target
-function getRandomWord() {
+//function to get a random word to use as the target / dictionary comes from words.js
+function getTargetWord() {
 	const randomIndex = Math.floor(Math.random() * dictionary.length);
 	return dictionary[randomIndex].toUpperCase();
 }
@@ -31,7 +31,7 @@ function setTargetWord() {
 	if (localStorage.length === 0 || refreshTimer() <= 0) {
 		localStorage.setItem("lastUpdated", Date.now());
 		localStorage.setItem("lastUpdatedHuman", dateFormat());
-		localStorage.setItem("targetWord", getRandomWord());
+		localStorage.setItem("targetWord", getTargetWord());
 	}
 }
 
