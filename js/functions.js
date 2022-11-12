@@ -46,37 +46,26 @@ function logLocalStorage() {
 	console.groupEnd();
 }
 
-// if key is pressed and if it is a letter, to add it to the grid
-function addKeyToGrid(key) {
-	const letter = document.createElement("div");
-	letter.classList.add("letter");
-	letter.textContent = key;
-	gameGrid.appendChild(letter);
+function correctKey() {
+	const correctStyle = "color: black; background: lightgreen; padding: 10px;";
+	console.log("%ccorrect", correctStyle);
 }
 
-// <====== function to check if key matches target word ======>
+function incorrectKey() {
+	const incorrectStyle = "color: black; background: orange; padding: 10px;";
+	console.log("%cincorrect", incorrectStyle);
+}
+
 function checkKey(key) {
 	const targetWord = localStorage.getItem("targetWord");
-	const correctStyle = "color: black; background: lightgreen; padding: 10px;";
-	const incorrectStyle = "color: black; background: orange; padding: 10px;";
-	if (targetWord.includes(key)) return console.log("%ccorrect", correctStyle);
-	if (!targetWord.includes(key)) return console.log("%cincorrect", incorrectStyle);
+	if (key === "ENTER") return console.log("enter");
+	if (key === "DELETE") return console.log("delete");
+	targetWord.includes(key) ? correctKey() : incorrectKey();
 }
 
-// input handler
-
-//listen for keypresses
-
-window.addEventListener("keydown", (e) => {
-	const key = e.key.toUpperCase();
-	dataKeys.forEach((key) => {
-		if (key.dataset.key === e.key) {
-			addKeyToGrid(key);
-		}
-	});
-	const dataKey = document.querySelector(`[data-key="${key}"]`);
-	addKeyToGrid(key);
-	checkKey(key);
-});
-
-//if (key.match(/[A-Z]/)) checkKey(key);
+// <====== function initializing the game ======>
+function startGame() {
+	setTargetWord();
+	refreshTimer();
+	logLocalStorage();
+}

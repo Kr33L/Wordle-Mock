@@ -9,7 +9,21 @@
 
 //wait until window has fully loaded
 window.addEventListener("load", function () {
-	setTargetWord();
-	refreshTimer();
-	logLocalStorage();
+	startGame();
+
+  // <====== event handlers ======>
+	dataKeys.forEach((key) => {
+		key.addEventListener("click", (e) => {
+			//if (e.target.dataset.key === "ENTER") { do something }
+			//if (e.target.dataset.key === "DELETE") { do something }
+			checkKey(e.target.dataset.key);
+		});
+	});
+
+	document.addEventListener("keydown", (e) => {
+		if (e.key.match(/^[a-z]$/)) {
+			checkKey(e.key.toUpperCase());
+		}
+	});
+
 });
