@@ -57,12 +57,25 @@ function checkKey(key) {
 	const wrongKey = () => console.log("%cincorrect", "color: black; background: orange; padding: 10px;");
 
 	if (key === " ") key = "SPACE";
+	if (key === "F12") return;
 	if (!targetWord) return console.error("No target word available");
-	if (!key.match(/^([a-z]|[A-Z])$/i)) return console.error(`${key} is not a letter`);
+	if (!key.match(/^[a-z]$/i)) return console.error(`${key} is not a letter`);
 	targetWord.includes(key) ? rightKey() : wrongKey();
 }
 
-// <====== function initializing the game ======>
+// <--- display a blinking message on the page --->
+function displayMessage(message, time) {
+	setInterval(() => {
+		const messageContainer = document.createElement("p");
+		messageContainer.textContent = message;
+		document.body.appendChild(messageContainer);
+		setTimeout(() => {
+			messageContainer.remove();
+		}, time - 1000);
+	}, time);
+}
+
+// <====== initialize the game ======>
 function startGame() {
 	setLocalStorage();
 	logLocalStorage();
