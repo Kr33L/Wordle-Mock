@@ -11,7 +11,7 @@
 window.addEventListener("load", function () {
 	startGame();
 
-  // <====== event handlers ======>
+	// <====== event handlers ======>
 	dataKeys.forEach((key) => {
 		key.addEventListener("click", (e) => {
 			//if (e.target.dataset.key === "ENTER") { do something }
@@ -21,9 +21,6 @@ window.addEventListener("load", function () {
 	});
 
 	document.addEventListener("keydown", (e) => {
-		if (e.key.match(/^[a-z]$/)) {
-			checkKey(e.key.toUpperCase());
-		}
+		checkKey(e.key.toUpperCase());
 	});
-
 });

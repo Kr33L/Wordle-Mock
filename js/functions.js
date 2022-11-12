@@ -1,40 +1,38 @@
 const gameGrid = document.querySelector("[data-grid]");
 const keyboard = document.querySelector("[data-keyboard]");
+const gridTiles = document.querySelectorAll("[data-grid-tile]");
 const dataKeys = document.querySelectorAll("[data-key]");
 
-// <====== function to show time until next refresh (24hours) ======>
-function refreshTimer() {
-	const lastUpdated = localStorage.getItem("lastUpdated");
-	const refreshTime = 86400000 - (Date.now() - lastUpdated);
-	localStorage.setItem("timeUntilRefresh", refreshTime + "ms");
-}
+// <====== human readable date and time ======>
+const addZero = (num) => (num < 10 ? "0" + num : num);
+const now = new Date();
+const date = {
+	month: addZero(now.getMonth() + 1),
+	day: addZero(now.getDate()),
+	hour: addZero(now.getHours()),
+	minute: addZero(now.getMinutes()),
+};
 
-// <====== function to get a random word to use as the target - dictionary comes from words.js ======>
-function getTargetWord() {
-	return dictionary[Math.floor(Math.random() * dictionary.length)].toUpperCase();
-}
+// <====== set data in local storage ======>
+function setLocalStorage() {
+	const targetWord = dictionary[Math.floor(Math.random() * dictionary.length)].toUpperCase();
+	const readableDate = `Last refresh was on ${date.day}/${date.month} at ${date.hour}:${date.minute}`;
+	function refreshTimer() {
+		const lastUpdated = localStorage.getItem("lastUpdated");
+		const refreshTime = 86400000 - (Date.now() - lastUpdated) + "ms";
+		return refreshTime;
+	}
 
-// <====== function for human readable date and time ======>
-function readableDate() {
-	const date = new Date();
-	const addZero = (num) => (num < 10 ? "0" + num : num); //add a zero if the number is less than 10
-	const month = addZero(date.getMonth() + 1);
-	const day = addZero(date.getDate());
-	const hour = addZero(date.getHours());
-	const minute = addZero(date.getMinutes());
-	return `Last refresh was on ${day}/${month} at ${hour}:${minute}`;
-}
-
-// <====== function to save the target word to local storage with timers if it doesn't exist or 24 hours has passed ======>
-function setTargetWord() {
 	if (localStorage.length === 0 || refreshTimer() <= 0) {
 		localStorage.setItem("lastUpdated", Date.now());
-		localStorage.setItem("lastUpdatedHuman", readableDate());
-		localStorage.setItem("targetWord", getTargetWord());
+		localStorage.setItem("lastUpdatedHuman", readableDate);
+		localStorage.setItem("targetWord", targetWord);
 	}
+
+	localStorage.setItem("timeUntilRefresh", refreshTimer());
 }
 
-// <====== function to log current content of the localStorage in console ======>
+// <====== log current content of the localStorage in console ======>
 function logLocalStorage() {
 	console.group("%c<-- Local Storage -->", "color: #fff; background: #000; padding: 50px;");
 	for (let i = 0; i < localStorage.length; i++) {
@@ -45,31 +43,27 @@ function logLocalStorage() {
 	console.groupEnd();
 }
 
+// <====== clear data from local storage ======>
 function clearData() {
-	console.info("Clearing local storage... run startGame() to restart");
+	if (localStorage.length === 0) return console.error("No data to clear");
 	localStorage.clear();
+	console.info("Local storage cleared");
 }
 
-function correctKey() {
-	const correctStyle = "color: black; background: lightgreen; padding: 10px;";
-	console.log("%ccorrect", correctStyle);
-}
-
-function incorrectKey() {
-	const incorrectStyle = "color: black; background: orange; padding: 10px;";
-	console.log("%cincorrect", incorrectStyle);
-}
-
+// <====== check if key matches target word ======>
 function checkKey(key) {
 	const targetWord = localStorage.getItem("targetWord");
-	if (key === "ENTER") return console.log("enter");
-	if (key === "DELETE") return console.log("delete");
-	targetWord.includes(key) ? correctKey() : incorrectKey();
+	const rightKey = () => console.log("%ccorrect", "color: black; background: lightgreen; padding: 10px;");
+	const wrongKey = () => console.log("%cincorrect", "color: black; background: orange; padding: 10px;");
+
+	if (key === " ") key = "SPACE";
+	if (!targetWord) return console.error("No target word available");
+	if (!key.match(/^([a-z]|[A-Z])$/i)) return console.error(`${key} is not a letter`);
+	targetWord.includes(key) ? rightKey() : wrongKey();
 }
 
 // <====== function initializing the game ======>
 function startGame() {
-	setTargetWord();
-	refreshTimer();
+	setLocalStorage();
 	logLocalStorage();
 }
