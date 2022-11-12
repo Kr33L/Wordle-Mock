@@ -11,12 +11,11 @@ function refreshTimer() {
 
 // <====== function to get a random word to use as the target - dictionary comes from words.js ======>
 function getTargetWord() {
-	const randomIndex = Math.floor(Math.random() * dictionary.length);
-	return dictionary[randomIndex].toUpperCase();
+	return dictionary[Math.floor(Math.random() * dictionary.length)].toUpperCase();
 }
 
 // <====== function for human readable date and time ======>
-function dateFormat() {
+function readableDate() {
 	const date = new Date();
 	const addZero = (num) => (num < 10 ? "0" + num : num); //add a zero if the number is less than 10
 	const month = addZero(date.getMonth() + 1);
@@ -30,7 +29,7 @@ function dateFormat() {
 function setTargetWord() {
 	if (localStorage.length === 0 || refreshTimer() <= 0) {
 		localStorage.setItem("lastUpdated", Date.now());
-		localStorage.setItem("lastUpdatedHuman", dateFormat());
+		localStorage.setItem("lastUpdatedHuman", readableDate());
 		localStorage.setItem("targetWord", getTargetWord());
 	}
 }
@@ -44,6 +43,11 @@ function logLocalStorage() {
 		console.log(`%c${key}: %c${value}`, "color: black; background: white; padding: 10px;");
 	}
 	console.groupEnd();
+}
+
+function clearData() {
+	console.info("Clearing local storage... run startGame() to restart");
+	localStorage.clear();
 }
 
 function correctKey() {
