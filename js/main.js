@@ -12,7 +12,7 @@ window.addEventListener("load", function () {
 	startGame();
 
 	//display message while console window is closed
-	displayMessage("Open your console window", 5000);
+	displayMessage("Open the CONSOLE window!", 1000);
 
 	// <====== event handlers ======>
 	dataKeys.forEach((key) => {
