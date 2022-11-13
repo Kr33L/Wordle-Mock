@@ -17,13 +17,13 @@ window.addEventListener("load", function () {
 	// <====== event handlers ======>
 	dataKeys.forEach((key) => {
 		key.addEventListener("click", (e) => {
-			//if (e.target.dataset.key === "ENTER") { do something }
-			//if (e.target.dataset.key === "DELETE") { do something }
+			gridInput(e.target.dataset.key);
 			checkKey(e.target.dataset.key);
 		});
 	});
 
 	document.addEventListener("keydown", (e) => {
+		gridInput(e.key.toUpperCase());
 		checkKey(e.key.toUpperCase());
 	});
 });

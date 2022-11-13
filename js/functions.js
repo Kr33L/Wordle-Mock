@@ -1,6 +1,6 @@
 const gameGrid = document.querySelector("[data-grid]");
 const keyboard = document.querySelector("[data-keyboard]");
-const gridTiles = document.querySelectorAll("[data-grid-tile]");
+const gridTiles = document.querySelectorAll("[data-tile]");
 const dataKeys = document.querySelectorAll("[data-key]");
 
 // <====== human readable date and time ======>
@@ -48,6 +48,17 @@ function clearData() {
 	if (localStorage.length === 0) return console.error("No data to clear");
 	localStorage.clear();
 	console.info("Local storage cleared");
+}
+
+function gridInput(key) {
+	for (const tile of gridTiles) {
+		//get the index of the tile
+		const tileIndex = tile.dataset.tile;
+		if (tile.textContent === "" && key.match(/^[a-z]$/i) && tileIndex < 5) {
+			tile.textContent = key;
+			break;
+		}
+	}
 }
 
 // <====== check if key matches target word ======>
