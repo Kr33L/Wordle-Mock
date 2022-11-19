@@ -1,5 +1,3 @@
-<div align="center">
+## _Wordle_
 
-# [Page](https://kr33l.github.io/wordle-mock/)
-  
-</div>
+No, it doesn't work as a wordle game. But it does some cool stuff in the console for now. :shrug:
