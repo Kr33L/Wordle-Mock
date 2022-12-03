@@ -3,17 +3,16 @@ const keyboard = document.querySelector("[data-keyboard]");
 const gridTiles = document.querySelectorAll("[data-tile]");
 const dataKeys = document.querySelectorAll("[data-key]");
 
-function startGame() {
-	setLocalStorage();
-	logLocalStorage();
-}
+const wordLength = 5;
 
 // <====== main functions ======>
 
 // <--- set data in local storage --->
+
 function setLocalStorage() {
 	const targetWord = dictionary[Math.floor(Math.random() * dictionary.length)].toUpperCase();
 	const readableDate = `Last refresh was on ${date.day}/${date.month} at ${date.hour}:${date.minute}`;
+
 	function refreshTimer() {
 		const lastUpdated = localStorage.getItem("lastUpdated");
 		const refreshTime = 86400000 - (Date.now() - lastUpdated) + "ms";
@@ -33,6 +32,7 @@ function setLocalStorage() {
 function gridInput(key) {
 	for (const tile of gridTiles) {
 		const tileIndex = tile.dataset.tile;
+
 		if (tile.textContent === "" && key.match(/^[a-z]$/i) && tileIndex < 5) {
 			tile.textContent = key;
 			break;
@@ -50,24 +50,30 @@ function checkKey(key) {
 	if (key === "F12") return;
 	if (!targetWord) return console.error("No target word available");
 	if (!key.match(/^[a-z]$/i)) return console.error(`${key} is not a letter`);
+
 	targetWord.includes(key) ? rightKey() : wrongKey();
 }
 
 // <====== helper functions ======>
+
 // <--- log current content of the localStorage in console --->
+
 function logLocalStorage() {
 	console.group("%c<-- Local Storage -->", "color: #fff; background: #000; padding: 50px;");
+
 	for (let i = 0; i < localStorage.length; i++) {
 		const key = localStorage.key(i);
 		const value = localStorage.getItem(key);
 		console.log(`%c${key}: %c${value}`, "color: black; background: white; padding: 10px;");
 	}
+
 	console.groupEnd();
 }
 
 // <--- clear data from local storage --->
 function clearData() {
 	if (localStorage.length === 0) return console.error("No data to clear");
+
 	localStorage.clear();
 	console.info("Local storage cleared");
 }
@@ -76,7 +82,9 @@ function clearData() {
 function displayMessage(message, time) {
 	const messageContainer = document.querySelector("#blinker");
 	const initialMessage = messageContainer.textContent;
+
 	messageContainer.textContent = message;
+
 	setTimeout(() => {
 		messageContainer.textContent = initialMessage;
 	}, time);

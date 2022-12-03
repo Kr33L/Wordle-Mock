@@ -1,5 +1,6 @@
 (function loadScripts() {
 	const scripts = ["js/words.js", "js/functions.js"];
+
 	for (const i of scripts) {
 		const script = document.createElement("script");
 		script.src = i;
@@ -9,9 +10,9 @@
 
 //wait until window has fully loaded
 window.addEventListener("load", function () {
-	startGame();
+	setLocalStorage();
+  logLocalStorage();
 
-	//display message while console window is closed
 	displayMessage("Open the CONSOLE window!", 1000);
 
 	// <====== event handlers ======>
