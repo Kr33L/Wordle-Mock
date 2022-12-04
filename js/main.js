@@ -1,30 +1,31 @@
-(function loadScripts() {
+function loadScripts() {
 	const scripts = ["js/words.js", "js/functions.js"];
 
-	for (const i of scripts) {
+	scripts.forEach((scriptPath) => {
 		const script = document.createElement("script");
-		script.src = i;
+		script.src = scriptPath;
 		document.body.appendChild(script);
-	}
-})();
+	});
+}
 
-//wait until window has fully loaded
+loadScripts();
+
 window.addEventListener("load", function () {
 	setLocalStorage();
-  logLocalStorage();
+	logLocalStorage();
 
 	displayMessage("Open the CONSOLE window!", 1000);
 
 	// <====== event handlers ======>
 	dataKeys.forEach((key) => {
-		key.addEventListener("click", (e) => {
-			gridInput(e.target.dataset.key);
-			checkKey(e.target.dataset.key);
+		key.addEventListener("click", (event) => {
+			gridInput(event.target.dataset.key);
+			checkKey(event.target.dataset.key);
 		});
 	});
 
-	document.addEventListener("keydown", (e) => {
-		gridInput(e.key.toUpperCase());
-		checkKey(e.key.toUpperCase());
+	document.addEventListener("keydown", (event) => {
+		gridInput(event.key.toUpperCase());
+		checkKey(event.key.toUpperCase());
 	});
 });
