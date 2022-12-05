@@ -58,16 +58,23 @@ function gridInput(key) {
 
 // <--- check if key matches target word --->
 function checkKey(key) {
-	const targetWord = localStorage.getItem("targetWord");
-	const outcome = (type, backgroundColor) => console.log(`%c${type}`, `background-color: ${backgroundColor}; color: black; padding: 10px;`);
+	handleSpecialKeys(key);
 
-	if (key === "F12") return;
-	if (key === " ") key = "SPACE";
+	const targetWord = localStorage.getItem("targetWord");
 	if (!targetWord) return console.error("No target word available");
-	if (!key.match(/^[a-z]$/i)) return console.error(`${key} is not a letter`);
+
+	const isLetter = key.match(/^[a-z]$/i);
+	if (!isLetter) return console.error(`${key} is not a letter`);
+
+	const outcome = (type, backgroundColor) => console.log(`%c${type}`, `background-color: ${backgroundColor}; color: black; padding: 10px;`);
 
 	targetWord.includes(key) ? outcome("Correct", "lightGreen") : outcome("Incorrect", "Orange");
 }
+
+// function handleSpecialKeys(key) {
+// 	if (key === "F12") return;
+// 	if (key === " ") return (key = "SPACE");
+// }
 
 function handleInputEvent(event) {
 	let input;
