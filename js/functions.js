@@ -20,9 +20,14 @@ const date = {
 
 // <--- set data in local storage --->
 function setLocalStorage() {
-	const randomIndex = Math.floor(Math.random() * dictionary.length);
-	const targetWord = dictionary[randomIndex].toUpperCase();
-	const readableDate = `Last refresh was on ${date.day}/${date.month} at ${date.hour}:${date.minute}`;
+	function getTargetWord() {
+		const randomIndex = Math.floor(Math.random() * dictionary.length);
+		return dictionary[randomIndex].toUpperCase();
+	}
+
+	function getReadableDate() {
+		return `Last refresh was on ${date.day}/${date.month} at ${date.hour}:${date.minute}`;
+	}
 
 	function refreshTimer() {
 		const lastUpdated = localStorage.getItem("lastUpdated");
@@ -32,8 +37,8 @@ function setLocalStorage() {
 
 	if (localStorage.length === 0 || refreshTimer() < 0) {
 		localStorage.setItem("lastUpdated", Date.now());
-		localStorage.setItem("lastUpdatedHuman", readableDate);
-		localStorage.setItem("targetWord", targetWord);
+		localStorage.setItem("lastUpdatedHuman", getReadableDate());
+		localStorage.setItem("targetWord", getTargetWord());
 		localStorage.setItem("timeUntilRefresh", refreshTimer());
 	} else {
 		localStorage.setItem("timeUntilRefresh", refreshTimer());
