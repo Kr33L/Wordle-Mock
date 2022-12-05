@@ -35,14 +35,12 @@ function setLocalStorage() {
 		return refreshTime;
 	}
 
-	if (localStorage.length === 0 || refreshTimer() < 0) {
-		localStorage.setItem("lastUpdated", Date.now());
-		localStorage.setItem("lastUpdatedHuman", getReadableDate());
-		localStorage.setItem("targetWord", getTargetWord());
-		localStorage.setItem("timeUntilRefresh", refreshTimer());
-	} else {
-		localStorage.setItem("timeUntilRefresh", refreshTimer());
-	}
+	localStorage.length === 0 || refreshTimer() < 0
+		? (localStorage.setItem("lastUpdated", Date.now()),
+		  localStorage.setItem("lastUpdatedHuman", getReadableDate()),
+		  localStorage.setItem("targetWord", getTargetWord()),
+		  localStorage.setItem("timeUntilRefresh", refreshTimer()))
+		: localStorage.setItem("timeUntilRefresh", refreshTimer());
 }
 
 // <--- show input on the grid --->
