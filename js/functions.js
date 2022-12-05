@@ -5,10 +5,20 @@ const dataKeys = document.querySelectorAll("[data-key]");
 
 const maxLength = 5;
 
+const addZero = (num) => (num < 10 ? "0" + num : num);
+const now = new Date();
+const date = {
+	month: addZero(now.getMonth() + 1),
+	day: addZero(now.getDate()),
+	hour: addZero(now.getHours()),
+	minute: addZero(now.getMinutes()),
+};
+
+//dictionary comes from words.js //? maybe a better idea to import it, but it's loaded dynamically instead along with functions.js.
+
 // <====== main functions ======>
 
 // <--- set data in local storage --->
-
 function setLocalStorage() {
 	const randomIndex = Math.floor(Math.random() * dictionary.length);
 	const targetWord = dictionary[randomIndex].toUpperCase();
@@ -56,10 +66,18 @@ function checkKey(key) {
 	targetWord.includes(key) ? outcome("Correct", "lightGreen") : outcome("Incorrect", "Orange");
 }
 
+function handleInputEvent(event) {
+	let input;
+	if (event.type === "click") input = event.target.dataset.key;
+	if (event.type === "keydown") input = event.key.toUpperCase();
+
+	gridInput(input);
+	checkKey(input);
+}
+
 // <====== helper functions ======>
 
 // <--- log current content of the localStorage in console --->
-
 function logLocalStorage() {
 	console.group("%c<-- Local Storage -->", "color: #fff; background: #000; padding: 50px;");
 
@@ -67,7 +85,7 @@ function logLocalStorage() {
 		const key = localStorage.key(i);
 		const value = localStorage.getItem(key);
 
-		if (key === "lastUpdated" || key === "lastUpdatedHuman" || key === "targetWord" || key === "timeUntilRefresh") {
+		if (key === "lastUpdated" || "lastUpdatedHuman" || "targetWord" || "timeUntilRefresh") {
 			console.log(`%c${key}: %c${value}`, "color: black; background: white; padding: 10px;");
 		}
 	}
@@ -78,8 +96,12 @@ function logLocalStorage() {
 // <--- clear data from local storage --->
 function clearData() {
 	if (localStorage.length === 0) return console.error("No data to clear");
+	const relatedData = ["lastUpdated", "lastUpdatedHuman", "targetWord", "timeUntilRefresh"];
 
-	localStorage.clear();
+	for (const data of relatedData) {
+		const value = localStorage.getItem(data);
+		localStorage.removeItem(data);
+	}
 	console.info("Local storage cleared");
 }
 
@@ -100,13 +122,3 @@ function displayMessage(message, time) {
 		}
 	}, time);
 }
-
-// <====== human readable date and time ======>
-const addZero = (num) => (num < 10 ? "0" + num : num);
-const now = new Date();
-const date = {
-	month: addZero(now.getMonth() + 1),
-	day: addZero(now.getDate()),
-	hour: addZero(now.getHours()),
-	minute: addZero(now.getMinutes()),
-};

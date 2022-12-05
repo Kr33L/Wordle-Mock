@@ -1,4 +1,4 @@
-function loadScripts() {
+(function loadScripts() {
 	const scripts = ["js/words.js", "js/functions.js"];
 
 	scripts.forEach((scriptPath) => {
@@ -6,9 +6,7 @@ function loadScripts() {
 		script.src = scriptPath;
 		document.body.appendChild(script);
 	});
-}
-
-loadScripts();
+})();
 
 window.addEventListener("load", function () {
 	setLocalStorage();
@@ -16,16 +14,8 @@ window.addEventListener("load", function () {
 
 	displayMessage("Open the CONSOLE window!", 1000);
 
-	// <====== event handlers ======>
 	dataKeys.forEach((key) => {
-		key.addEventListener("click", (event) => {
-			gridInput(event.target.dataset.key);
-			checkKey(event.target.dataset.key);
-		});
-	});
-
-	document.addEventListener("keydown", (event) => {
-		gridInput(event.key.toUpperCase());
-		checkKey(event.key.toUpperCase());
+		key.addEventListener("click", handleInputEvent);
+		document.addEventListener("keydown", handleInputEvent);
 	});
 });
