@@ -91,15 +91,17 @@ function displayMessage(message, time) {
 	const messageContainer = document.querySelector("#blinker");
 	const initialMessage = messageContainer.textContent;
 
-	messageContainer.textContent = message;
+	let showingMessage = true;
 
-	setTimeout(() => {
-		messageContainer.textContent = initialMessage;
+	setInterval(() => {
+		if (showingMessage) {
+			messageContainer.textContent = message;
+			showingMessage = false;
+		} else {
+			messageContainer.textContent = initialMessage;
+			showingMessage = true;
+		}
 	}, time);
-
-	setTimeout(() => {
-		displayMessage(message, time);
-	}, time * 2);
 }
 
 // <====== human readable date and time ======>
