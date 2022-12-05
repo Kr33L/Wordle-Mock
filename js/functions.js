@@ -3,14 +3,15 @@ const keyboard = document.querySelector("[data-keyboard]");
 const gridTiles = document.querySelectorAll("[data-tile]");
 const dataKeys = document.querySelectorAll("[data-key]");
 
-const wordLength = 5;
+const maxLength = 5;
 
 // <====== main functions ======>
 
 // <--- set data in local storage --->
 
 function setLocalStorage() {
-	const targetWord = dictionary[Math.floor(Math.random() * dictionary.length)].toUpperCase();
+	const randomIndex = Math.floor(Math.random() * dictionary.length);
+	const targetWord = dictionary[randomIndex].toUpperCase();
 	const readableDate = `Last refresh was on ${date.day}/${date.month} at ${date.hour}:${date.minute}`;
 
 	function refreshTimer() {
@@ -19,21 +20,23 @@ function setLocalStorage() {
 		return refreshTime;
 	}
 
-	if (localStorage.length === 0 || refreshTimer() <= 0) {
+	if (localStorage.length === 0 || refreshTimer() < 0) {
 		localStorage.setItem("lastUpdated", Date.now());
 		localStorage.setItem("lastUpdatedHuman", readableDate);
 		localStorage.setItem("targetWord", targetWord);
+		localStorage.setItem("timeUntilRefresh", refreshTimer());
+	} else {
+		localStorage.setItem("timeUntilRefresh", refreshTimer());
 	}
-
-	localStorage.setItem("timeUntilRefresh", refreshTimer());
 }
 
 // <--- show input on the grid --->
 function gridInput(key) {
-	for (const tile of gridTiles) {
-		const tileIndex = tile.dataset.tile;
+	for (let i = 0; i < gridTiles.length; i++) {
+		const tile = gridTiles[i];
+		const tileText = tile.textContent;
 
-		if (tile.textContent === "" && key.match(/^[a-z]$/i) && tileIndex < 5) {
+		if (key.match(/^[a-z]$/i) && tileText === "" && maxLength > i) {
 			tile.textContent = key;
 			break;
 		}
@@ -43,15 +46,17 @@ function gridInput(key) {
 // <--- check if key matches target word --->
 function checkKey(key) {
 	const targetWord = localStorage.getItem("targetWord");
-	const rightKey = () => console.log("%ccorrect", "color: black; background: lightgreen; padding: 10px;");
-	const wrongKey = () => console.log("%cincorrect", "color: black; background: orange; padding: 10px;");
 
-	if (key === " ") key = "SPACE";
 	if (key === "F12") return;
+	if (key === " ") key = "SPACE";
 	if (!targetWord) return console.error("No target word available");
 	if (!key.match(/^[a-z]$/i)) return console.error(`${key} is not a letter`);
 
-	targetWord.includes(key) ? rightKey() : wrongKey();
+	const outcome = (type, backgroundColour) => {
+		console.log(`%c${type}`, `background-color: ${backgroundColour}; color: black; padding: 10px;`);
+	};
+
+	targetWord.includes(key) ? outcome("Correct", "lightGreen") : outcome("Incorrect", "Orange");
 }
 
 // <====== helper functions ======>
@@ -64,7 +69,10 @@ function logLocalStorage() {
 	for (let i = 0; i < localStorage.length; i++) {
 		const key = localStorage.key(i);
 		const value = localStorage.getItem(key);
-		console.log(`%c${key}: %c${value}`, "color: black; background: white; padding: 10px;");
+
+		if (key === "lastUpdated" || key === "lastUpdatedHuman" || key === "targetWord" || key === "timeUntilRefresh") {
+			console.log(`%c${key}: %c${value}`, "color: black; background: white; padding: 10px;");
+		}
 	}
 
 	console.groupEnd();
