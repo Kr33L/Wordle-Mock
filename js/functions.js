@@ -31,16 +31,16 @@ function setLocalStorage() {
 
 	function refreshTimer() {
 		const lastUpdated = localStorage.getItem("lastUpdated");
-		const refreshTime = 86400000 - (Date.now() - lastUpdated) + "ms";
+		const refreshTime = 86400000 - (Date.now() - lastUpdated);
 		return refreshTime;
 	}
 
-	localStorage.length === 0 || refreshTimer() < 0
+	localStorage.length === 0 || refreshTimer() <= 0
 		? (localStorage.setItem("lastUpdated", Date.now()),
 		  localStorage.setItem("lastUpdatedHuman", getReadableDate()),
 		  localStorage.setItem("targetWord", getTargetWord()),
-		  localStorage.setItem("timeUntilRefresh", refreshTimer()))
-		: localStorage.setItem("timeUntilRefresh", refreshTimer());
+		  localStorage.setItem("timeUntilRefresh", refreshTimer() + "ms"))
+		: localStorage.setItem("timeUntilRefresh", refreshTimer() + "ms");
 }
 
 // <--- show input on the grid --->
@@ -50,18 +50,18 @@ function gridInput(key) {
 		const tileText = tile.textContent;
 
 		if (key.match(/^[a-z]$/i) && tileText === "" && maxLength > i) {
-			tile.textContent = key;
-			break;
+			return (tile.textContent = key);
 		}
 	}
 }
 
 // <--- check if key matches target word --->
 function checkKey(key) {
-	handleSpecialKeys(key);
-
 	const targetWord = localStorage.getItem("targetWord");
 	if (!targetWord) return console.error("No target word available");
+
+	if (key === "F12") return;
+	if (key === " ") key = "SPACE";
 
 	const isLetter = key.match(/^[a-z]$/i);
 	if (!isLetter) return console.error(`${key} is not a letter`);
@@ -112,6 +112,7 @@ function clearData() {
 		const value = localStorage.getItem(data);
 		localStorage.removeItem(data);
 	}
+
 	console.info("Local storage cleared");
 }
 
