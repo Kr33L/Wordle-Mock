@@ -71,11 +71,6 @@ function checkKey(key) {
 	targetWord.includes(key) ? outcome("Correct", "lightGreen") : outcome("Incorrect", "Orange");
 }
 
-// function handleSpecialKeys(key) {
-// 	if (key === "F12") return;
-// 	if (key === " ") return (key = "SPACE");
-// }
-
 function handleInputEvent(event) {
 	let input;
 	if (event.type === "click") input = event.target.dataset.key;
@@ -91,13 +86,13 @@ function handleInputEvent(event) {
 function logLocalStorage() {
 	console.group("%c<-- Local Storage -->", "color: #fff; background: #000; padding: 50px;");
 
-	for (let i = 0; i < localStorage.length; i++) {
-		const key = localStorage.key(i);
-		const value = localStorage.getItem(key);
+	const relatedKeys = ["lastUpdated", "lastUpdatedHuman", "targetWord", "timeUntilRefresh"];
+	const localStorageKeys = Object.keys(localStorage);
+	const keysToLog = localStorageKeys.filter((key) => relatedKeys.includes(key));
 
-		if (key === "lastUpdated" || "lastUpdatedHuman" || "targetWord" || "timeUntilRefresh") {
-			console.log(`%c${key}: %c${value}`, "color: black; background: white; padding: 10px;");
-		}
+	for (const key of keysToLog) {
+		const value = localStorage.getItem(key);
+		console.log(`%c${key}: %c${value}`, "color: black; background: white; padding: 10px;");
 	}
 
 	console.groupEnd();
